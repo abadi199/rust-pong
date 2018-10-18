@@ -1,28 +1,11 @@
 extern crate amethyst;
 
-use amethyst::input::{is_close_requested, is_key_down};
+mod pong;
+
+use amethyst::core::TransformBundle;
 use amethyst::prelude::*;
-use amethyst::renderer::{
-    DisplayConfig, DrawFlat, Event, KeyboardInput, Pipeline, PosTex, RenderBundle, Stage,
-    VirtualKeyCode, WindowEvent,
-};
-
-pub struct Pong;
-
-impl<'a, 'b> State<GameData<'a, 'b>> for Pong {
-    fn handle_event(&mut self, _: StateData<GameData>, event: Event) -> Trans<GameData<'a, 'b>> {
-        if is_close_requested(&event) || is_key_down(&event, VirtualKeyCode::Escape) {
-            Trans::Quit
-        } else {
-            Trans::None
-        }
-    }
-
-    fn update(&mut self, data: StateData<GameData>) -> Trans<GameData<'a, 'b>> {
-        data.data.update(&data.world);
-        Trans::None
-    }
-}
+use amethyst::renderer::{DisplayConfig, DrawFlat, Pipeline, PosTex, RenderBundle, Stage};
+use pong::Pong;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -34,9 +17,10 @@ fn main() -> amethyst::Result<()> {
             .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
             .with_pass(DrawFlat::<PosTex>::new()),
     );
-    let game_data =
-        GameDataBuilder::default().with_bundle(RenderBundle::new(pipe, Some(config)))?;
-    let mut game = Application::new("./", Pong, game_data)?;
+    let game_data = GameDataBuilder::default()
+        .with_bundle(RenderBundle::new(pipe, Some(config)))?
+        .with_bundle(TransformBundle::new())?;
+    let mut game = Application::build("./", Pong)?.build(game_data)?;
     game.run();
     Ok(())
 }
