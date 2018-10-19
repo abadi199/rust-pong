@@ -65,12 +65,12 @@ fn initialise_camera(world: &mut World) {
 }
 
 #[derive(PartialEq, Eq)]
-enum Side {
+pub enum Side {
     Left,
     Right,
 }
 
-struct Paddle {
+pub struct Paddle {
     pub side: Side,
     pub width: f32,
     pub height: f32,
