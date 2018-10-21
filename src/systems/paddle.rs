@@ -1,7 +1,7 @@
 use amethyst::core::transform::components::Transform;
 use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
-use pong::{Paddle, Side, ARENA_HEIGHT, PADDLE_HEIGHT};
+use {Paddle, Side, ARENA_HEIGHT, PADDLE_HEIGHT};
 
 pub struct PaddleSystem;
 
